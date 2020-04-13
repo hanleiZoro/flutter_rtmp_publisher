@@ -222,7 +222,7 @@ class Haishin : NSObject {
     rtmpStream!.videoSettings = [
       "width": width, // video output width
       "height": height, // video output height
-      "bitrate": RTMPStream.defaultVideoBitrate, //  width * height / 1440 * 1024
+      "bitrate": RTMPStream.defaultVideoBitrate * 10, //  width * height / 1440 * 1024
       // "dataRateLimits": [160 * 1024 / 8, 1], optional kVTCompressionPropertyKey_DataRateLimits property
       "profileLevel": kVTProfileLevel_H264_Baseline_3_1, // H264 Profile require "import VideoToolbox"
       "maxKeyFrameIntervalDuration": 2, // key frame / sec
