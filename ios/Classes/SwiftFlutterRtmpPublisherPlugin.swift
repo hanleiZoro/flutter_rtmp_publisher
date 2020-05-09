@@ -308,12 +308,14 @@ class Haishin : NSObject {
   
   public func paused() {
     // TODO: Implement some
-    print("paused not yet implemented on iOS.")
+    //print("paused not yet implemented on iOS.")
+    eventSink?("paused");
   }
   
   public func resumed() {
     // TODO: Implement some
-    print("resumed not yet implemented on iOS.")
+//    print("resumed not yet implemented on iOS.")
+    eventSink?("resumed");
   }
   
   private func disconnectWithoutNotify() -> Bool {

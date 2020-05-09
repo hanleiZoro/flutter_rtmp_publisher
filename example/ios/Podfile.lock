@@ -1,3 +1,35 @@
+PODS:
+  - Flutter (1.0.0)
+  - flutter_rtmp_publisher (0.0.1):
+    - Flutter
+    - Logboard
+  - Logboard (2.1.2)
+  - screen_keep_on (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `.symlinks/flutter/ios`)
+  - flutter_rtmp_publisher (from `.symlinks/plugins/flutter_rtmp_publisher/ios`)
+  - screen_keep_on (from `.symlinks/plugins/screen_keep_on/ios`)
+
+SPEC REPOS:
+  trunk:
+    - Logboard
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: ".symlinks/flutter/ios"
+  flutter_rtmp_publisher:
+    :path: ".symlinks/plugins/flutter_rtmp_publisher/ios"
+  screen_keep_on:
+    :path: ".symlinks/plugins/screen_keep_on/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  flutter_rtmp_publisher: 967e67be1513915a1343b6674367559d297e7b85
+  Logboard: e3342fa111e26268bb89577e6a40a0660a423ddd
+  screen_keep_on: bc7e481db4acb53ad6ca44bfd8c1b22dcdce1c48
+
 PODFILE CHECKSUM: 8dfe481be7eab4daff15e9e4ecfdcc3970f196ae
 
 COCOAPODS: 1.8.4

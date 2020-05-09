@@ -42,7 +42,7 @@ class _MyAppState extends State<MyApp> {
                 icon: Icon(status?.isStreaming == true ? Icons.cast_connected : Icons.cast),
                 onPressed: () {
                   if (!status.isStreaming)
-                    controller.connect(rtmpUrl: 'rtmp://dev.cuminas.jp:1935/hls', streamName: 'test');
+                    controller.connect(rtmpUrl: 'rtmp://96091.livepush.myqcloud.com/live/live?txSecret=74be5369f0b81fe5c0da851178389dd6&txTime=5EB4307F', streamName: '');
                   else
                     controller.disconnect();
                 }
