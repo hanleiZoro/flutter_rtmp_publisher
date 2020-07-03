@@ -83,8 +83,8 @@ public class SwiftFlutterRtmpPublisherPlugin: NSObject, FlutterPlugin {
       } else if call.method == "setCamera" {
         guard let args = call.arguments as! NSDictionary? else { result(nil); return }
         guard let camera = args["camera"] as! NSString? else { result(nil); return }
-        try getHaishin(call).setCamera(camera: camera as String)
-        result(nil)
+        bool cameraResult = try getHaishin(call).setCamera(camera: camera as String)
+        result(cameraResult)
         return
       } else {
         print("SwiftFlutterRtmpPublisherPlugin.handle: unknown command: \(call.method)")
@@ -265,22 +265,18 @@ class Haishin : NSObject {
     eventSink?(cameraSize)
   }
 
-  public func setCamera(camera: String) {
+  public func setCamera(camera: String) -> bool {
     position = camera == "back" ? AVCaptureDevice.Position.back : AVCaptureDevice.Position.front
     let device = AVCaptureDevice.devices().first {
       $0.hasMediaType(.video) && $0.position == position
     }
 
-    if (device == null) {
-       let value: [String: Any?] = ["name": "camera", "error": -1];
-       eventSink?(value);
-    }else {
-       rtmpStream!.attachCamera(device) { error in
-          print(error)
-       }
-       let camera1:[String: Any?] = ["name": "camera", "camera": camera]
-       eventSink?(camera1)
+    rtmpStream!.attachCamera(device) { error in
+       print(error)
     }
+    let camera1:[String: Any?] = ["name": "camera", "camera": camera]
+    eventSink?(camera1)
+    return device != null;
   }
 
   public func stopPreview() {

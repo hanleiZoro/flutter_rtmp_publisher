@@ -194,29 +194,23 @@ class RtmpLiveViewController {
     await _channel.invokeMethod('stopPreview', {'tex': _tex});
   }
 
-  Future setCamera(RtmpLiveViewCameraPosition cameraPosition) async {
+  Future<bool> setCamera(RtmpLiveViewCameraPosition cameraPosition) async {
     _checkParams();
-    Map map = await _channel.invokeMethod('setCamera', {
+    bool result = await _channel.invokeMethod('setCamera', {
       'tex': _tex,
       'camera':
           cameraPosition == RtmpLiveViewCameraPosition.back ? 'back' : 'front'
     });
-    if (map.containsKey('error')) {
-      return map['error'] == -1 ? NoDeviceError() : map;
-    }
-      return map;
+    return result;
   }
 
-  Future swapCamera() async {
+  Future<bool> swapCamera() async {
     _checkParams();
-    Map map = await setCamera(
+    bool result = await setCamera(
         status.value.cameraPosition == RtmpLiveViewCameraPosition.back
             ? RtmpLiveViewCameraPosition.front
             : RtmpLiveViewCameraPosition.back);
-    if (map.containsKey('error')) {
-      return map['error'] == -1 ? NoDeviceError() : map;
-    }
-    return map;
+    return result;
   }
 
   Future connect(
