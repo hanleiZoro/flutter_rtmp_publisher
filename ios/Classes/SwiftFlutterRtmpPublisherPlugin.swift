@@ -83,7 +83,7 @@ public class SwiftFlutterRtmpPublisherPlugin: NSObject, FlutterPlugin {
       } else if call.method == "setCamera" {
         guard let args = call.arguments as! NSDictionary? else { result(nil); return }
         guard let camera = args["camera"] as! NSString? else { result(nil); return }
-        bool cameraResult = try getHaishin(call).setCamera(camera: camera as String)
+        let cameraResult: Bool = try getHaishin(call).setCamera(camera: camera as String)
         result(cameraResult)
         return
       } else {
@@ -265,7 +265,7 @@ class Haishin : NSObject {
     eventSink?(cameraSize)
   }
 
-  public func setCamera(camera: String) -> bool {
+  public func setCamera(camera: String) -> Bool {
     position = camera == "back" ? AVCaptureDevice.Position.back : AVCaptureDevice.Position.front
     let device = AVCaptureDevice.devices().first {
       $0.hasMediaType(.video) && $0.position == position
@@ -276,7 +276,7 @@ class Haishin : NSObject {
     }
     let camera1:[String: Any?] = ["name": "camera", "camera": camera]
     eventSink?(camera1)
-    return device != null;
+    return device != nil;
   }
 
   public func stopPreview() {
