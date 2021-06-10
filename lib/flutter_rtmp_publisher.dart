@@ -5,18 +5,18 @@ import 'package:flutter/services.dart';
 enum RtmpLiveViewCameraPosition { front, back }
 
 class RtmpStatus {
-  final int width;
-  final int height;
-  final int fps;
-  final bool isStreaming;
-  final bool isStreamingPaused;
-  final RtmpLiveViewCameraPosition cameraPosition;
-  final String rtmpUrl;
-  final String streamName;
-  final int cameraWidth;
-  final int cameraHeight;
+  final int? width;
+  final int? height;
+  final int? fps;
+  final bool? isStreaming;
+  final bool? isStreamingPaused;
+  final RtmpLiveViewCameraPosition? cameraPosition;
+  final String? rtmpUrl;
+  final String? streamName;
+  final int? cameraWidth;
+  final int? cameraHeight;
 
-  double get aspectRatio => height != 0 ? width / height : 1.0;
+  double get aspectRatio => height != 0 ? width! / height! : 1.0;
 
   RtmpStatus._(
       {this.width,
@@ -31,16 +31,16 @@ class RtmpStatus {
       this.cameraHeight});
 
   RtmpStatus updateWith(
-      {int width,
-      int height,
-      int fps,
-      bool isStreaming,
-      bool isStreamingPaused,
-      RtmpLiveViewCameraPosition cameraPosition,
-      String rtmpUrl,
-      String streamName,
-      int cameraWidth,
-      int cameraHeight}) {
+      {int? width,
+      int? height,
+      int? fps,
+      bool? isStreaming,
+      bool? isStreamingPaused,
+      RtmpLiveViewCameraPosition? cameraPosition,
+      String? rtmpUrl,
+      String? streamName,
+      int? cameraWidth,
+      int? cameraHeight}) {
     return RtmpStatus._(
         width: width ?? this.width,
         height: height ?? this.height,
@@ -60,15 +60,15 @@ class RtmpLiveViewController {
       const MethodChannel('jp.espresso3389.flutter_rtmp_publisher');
   static bool _fxInitialized = false;
 
-  StreamSubscription<dynamic> _sub;
-  String _rtmpUrlConnectingTo;
-  String _streamNameConnectingTo;
-  int _tex;
+  StreamSubscription<dynamic>? _sub;
+  String? _rtmpUrlConnectingTo;
+  String? _streamNameConnectingTo;
+  int? _tex;
 
-  final status = ValueNotifier<RtmpStatus>(null);
+  final status = ValueNotifier<RtmpStatus>(RtmpStatus._());
 
   void dispose() {
-    status?.dispose();
+    status.dispose();
     _sub?.cancel();
     _sub = null;
     close();
@@ -92,10 +92,10 @@ class RtmpLiveViewController {
   }
 
   Future initialize(
-      {@required int width,
-      @required int height,
-      @required int fps,
-      @required RtmpLiveViewCameraPosition cameraPosition,
+      {required int width,
+      required int height,
+      required int fps,
+      required RtmpLiveViewCameraPosition cameraPosition,
       bool restartPreview = true}) async {
     await _initTex();
 
@@ -143,7 +143,7 @@ class RtmpLiveViewController {
             status.value = status.value.updateWith(
                 cameraWidth: data['width'], cameraHeight: data['height']);
             print(
-                'cameraSize: ${status.value?.cameraWidth} x ${status.value?.cameraHeight}');
+                'cameraSize: ${status.value.cameraWidth} x ${status.value.cameraHeight}');
             break;
           case 'camera':
             status.value = status.value.updateWith(
@@ -213,8 +213,7 @@ class RtmpLiveViewController {
     return result;
   }
 
-  Future connect(
-      {@required String rtmpUrl, @required String streamName}) async {
+  Future connect({required String rtmpUrl, required String streamName}) async {
     _checkParams();
     _rtmpUrlConnectingTo = rtmpUrl;
     _streamNameConnectingTo = streamName;
@@ -258,7 +257,7 @@ class RtmpLiveView extends StatefulWidget {
   final bool keepAspectRatio;
 
   RtmpLiveView(
-      {Key key, @required this.controller, this.keepAspectRatio = false})
+      {Key? key, required this.controller, this.keepAspectRatio = false})
       : super(key: key);
 }
 
@@ -267,12 +266,12 @@ class _RtmpLiveViewState extends State<RtmpLiveView>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance!.addObserver(this);
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance!.removeObserver(this);
     super.dispose();
   }
 
@@ -291,13 +290,12 @@ class _RtmpLiveViewState extends State<RtmpLiveView>
         valueListenable: widget.controller.status,
         builder: (context, status, child) {
           // NOTE: _tex is initialized before status
-          if (status == null || widget.controller._tex == null)
-            return Container();
+          if (widget.controller._tex == null) return Container();
           if (widget.keepAspectRatio == true)
             return AspectRatio(
                 aspectRatio: status.aspectRatio,
-                child: Texture(textureId: widget.controller._tex));
-          return Texture(textureId: widget.controller._tex);
+                child: Texture(textureId: widget.controller._tex!));
+          return Texture(textureId: widget.controller._tex!);
         });
   }
 }
